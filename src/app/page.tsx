@@ -39,7 +39,6 @@ export default async function Home() {
             <p className="text-sm font-medium text-muted-foreground mb-2">Carteira de Clientes</p>
             <div className="flex items-center gap-2">
               <span className="text-2xl font-bold">Ver</span>
-              <span className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">Novo módulo</span>
             </div>
           </div>
         </Link>
@@ -48,6 +47,14 @@ export default async function Home() {
             <p className="text-sm font-medium text-muted-foreground mb-2">Imóveis</p>
             <div className="flex items-center gap-2">
               <span className="text-2xl font-bold">Ver</span>
+            </div>
+          </div>
+        </Link>
+        <Link href="/leads" className="col-span-2">
+          <div className="p-4 bg-background border rounded-lg shadow-sm hover:border-primary transition-colors cursor-pointer h-full">
+            <p className="text-sm font-medium text-muted-foreground mb-2">Funil de Vendas (Kanban)</p>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl font-bold">Acompanhar Leads</span>
               <span className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">Novo módulo</span>
             </div>
           </div>
