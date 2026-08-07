@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -33,14 +34,20 @@ export default async function Home() {
       </header>
       
       <div className="grid grid-cols-2 gap-4">
-        {/* Placeholder cards */}
-        <div className="p-4 bg-background border rounded-lg shadow-sm">
-          <p className="text-sm font-medium text-muted-foreground">Leads Novos</p>
-          <p className="text-2xl font-bold">0</p>
-        </div>
-        <div className="p-4 bg-background border rounded-lg shadow-sm">
-          <p className="text-sm font-medium text-muted-foreground">Visitas</p>
-          <p className="text-2xl font-bold">0</p>
+        <Link href="/clientes">
+          <div className="p-4 bg-background border rounded-lg shadow-sm hover:border-primary transition-colors cursor-pointer h-full">
+            <p className="text-sm font-medium text-muted-foreground mb-2">Carteira de Clientes</p>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl font-bold">Ver</span>
+              <span className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">Novo módulo</span>
+            </div>
+          </div>
+        </Link>
+        <div className="p-4 bg-background border rounded-lg shadow-sm opacity-50">
+          <p className="text-sm font-medium text-muted-foreground mb-2">Imóveis</p>
+          <div className="flex items-center gap-2">
+            <span className="text-2xl font-bold">Em breve</span>
+          </div>
         </div>
       </div>
     </div>
