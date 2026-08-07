@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      Role     @default(BROKER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  clients          Client[]
+  properties       Property[]
+  leads            Lead[]
+  rentalContracts  RentalContract[]
+  reminders        Reminder[]
+}
+
+enum Role {
+  ADMIN
+  BROKER
+}
+
+model Client {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  name        String
+  phone       String?
+  email       String?
+  types       ClientType[]
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  properties      Property[]
+  leads           Lead[]
+  rentalContracts RentalContract[]
+  interactions    Interaction[]
+  reminders       Reminder[]
+}
+
+enum ClientType {
+  BUYER
+  RENTER
+  OWNER
+}
+
+model Property {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  ownerId     String?
+  owner       Client?  @relation(fields: [ownerId], references: [id])
+  
+  address     String?
+  neighborhood String?
+  price       Float
+  type        PropertyType
+  status      PropertyStatus @default(AVAILABLE)
+  commission  String? 
+  photos      String[] 
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  leads           Lead[]
+  rentalContracts RentalContract[]
+}
+
+enum PropertyType {
+  SALE
+  RENTAL
+}
+
+enum PropertyStatus {
+  AVAILABLE
+  RESERVED
+  SOLD
+  RENTED
+}
+
+model Lead {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  clientId    String?
+  client      Client?  @relation(fields: [clientId], references: [id])
+  propertyId  String?
+  property    Property? @relation(fields: [propertyId], references: [id])
+  
+  origin      String? 
+  stage       LeadStage @default(NEW)
+  lostReason  String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum LeadStage {
+  NEW
+  CONTACTED
+  VISIT_SCHEDULED
+  VISIT_DONE
+  PROPOSAL
+  NEGOTIATION
+  WON
+  LOST
+}
+
+model RentalContract {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  propertyId  String
+  property    Property @relation(fields: [propertyId], references: [id])
+  renterId    String
+  renter      Client   @relation(fields: [renterId], references: [id])
+  
+  rentValue   Float
+  commission  Float?
+  startDate   DateTime
+  endDate     DateTime
+  fileUrl     String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Interaction {
+  id          String   @id @default(cuid())
+  clientId    String
+  client      Client   @relation(fields: [clientId], references: [id])
+  
+  description String
+  date        DateTime @default(now())
+  type        InteractionType @default(NOTE)
+}
+
+enum InteractionType {
+  NOTE
+  CALL
+  VISIT
+}
+
+model Reminder {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  clientId    String
+  client      Client   @relation(fields: [clientId], references: [id])
+  
+  description String
+  date        DateTime
+  status      ReminderStatus @default(PENDING)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum ReminderStatus {
+  PENDING
+  DONE
+  CANCELED
+}
