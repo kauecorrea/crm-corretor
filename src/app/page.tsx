@@ -55,6 +55,14 @@ export default async function Home() {
             <p className="text-sm font-medium text-muted-foreground mb-2">Funil de Vendas (Kanban)</p>
             <div className="flex items-center gap-2">
               <span className="text-2xl font-bold">Acompanhar Leads</span>
+            </div>
+          </div>
+        </Link>
+        <Link href="/contratos" className="col-span-2">
+          <div className="p-4 bg-background border rounded-lg shadow-sm hover:border-primary transition-colors cursor-pointer h-full border-l-4 border-l-green-500">
+            <p className="text-sm font-medium text-muted-foreground mb-2">Vendas e Locações</p>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl font-bold">Negócios Fechados</span>
               <span className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">Novo módulo</span>
             </div>
           </div>

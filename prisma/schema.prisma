@@ -17,7 +17,7 @@ model User {
   clients          Client[]
   properties       Property[]
   leads            Lead[]
-  rentalContracts  RentalContract[]
+  contracts        Contract[]
   reminders        Reminder[]
 }
 
@@ -40,7 +40,7 @@ model Client {
 
   properties      Property[]
   leads           Lead[]
-  rentalContracts RentalContract[]
+  contracts       Contract[]
   interactions    Interaction[]
   reminders       Reminder[]
 }
@@ -70,7 +70,7 @@ model Property {
   updatedAt   DateTime @updatedAt
 
   leads           Lead[]
-  rentalContracts RentalContract[]
+  contracts       Contract[]
 }
 
 enum PropertyType {
@@ -113,19 +113,19 @@ enum LeadStage {
   LOST
 }
 
-model RentalContract {
+model Contract {
   id          String   @id @default(cuid())
   userId      String
   user        User     @relation(fields: [userId], references: [id])
   propertyId  String
   property    Property @relation(fields: [propertyId], references: [id])
-  renterId    String
-  renter      Client   @relation(fields: [renterId], references: [id])
+  clientId    String
+  client      Client   @relation(fields: [clientId], references: [id])
   
-  rentValue   Float
+  type        PropertyType
+  dealValue   Float
   commission  Float?
-  startDate   DateTime
-  endDate     DateTime
+  date        DateTime
   fileUrl     String?
 
   createdAt   DateTime @default(now())
