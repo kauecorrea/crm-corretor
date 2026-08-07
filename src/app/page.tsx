@@ -43,12 +43,15 @@ export default async function Home() {
             </div>
           </div>
         </Link>
-        <div className="p-4 bg-background border rounded-lg shadow-sm opacity-50">
-          <p className="text-sm font-medium text-muted-foreground mb-2">Imóveis</p>
-          <div className="flex items-center gap-2">
-            <span className="text-2xl font-bold">Em breve</span>
+        <Link href="/imoveis">
+          <div className="p-4 bg-background border rounded-lg shadow-sm hover:border-primary transition-colors cursor-pointer h-full">
+            <p className="text-sm font-medium text-muted-foreground mb-2">Imóveis</p>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl font-bold">Ver</span>
+              <span className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">Novo módulo</span>
+            </div>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );
