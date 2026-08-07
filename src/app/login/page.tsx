@@ -43,10 +43,10 @@ export default async function LoginPage({
             )}
 
             <div className="flex flex-col gap-2 pt-2">
-              <Button formAction={login} className="w-full">
+              <Button type="submit" formAction={login} className="w-full">
                 Entrar
               </Button>
-              <Button formAction={signup} variant="outline" className="w-full">
+              <Button type="submit" formAction={signup} variant="outline" className="w-full">
                 Criar Conta
               </Button>
             </div>

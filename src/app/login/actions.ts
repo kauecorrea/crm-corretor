@@ -44,7 +44,8 @@ export async function signup(formData: FormData) {
   });
 
   if (error || !data.user) {
-    redirect("/login?error=Não foi possível criar a conta");
+    console.error("Supabase signup error:", error);
+    redirect("/login?error=Não foi possível criar a conta: " + (error?.message || "Erro desconhecido"));
   }
 
   // Ensure user exists in Prisma
