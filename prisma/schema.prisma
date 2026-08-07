@@ -58,6 +58,8 @@ model Property {
   ownerId     String?
   owner       Client?  @relation(fields: [ownerId], references: [id])
   
+  title       String
+  description String?
   address     String?
   neighborhood String?
   price       Float

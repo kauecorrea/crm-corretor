@@ -19,7 +19,7 @@ export default async function ClienteDetalhesPage({
   const cliente = await prisma.client.findUnique({
     where: { id },
     include: {
-      interactions: { orderBy: { createdAt: 'desc' } },
+      interactions: { orderBy: { date: 'desc' } },
       reminders: { orderBy: { date: 'asc' } },
     }
   });
@@ -76,7 +76,7 @@ export default async function ClienteDetalhesPage({
               <div key={interaction.id} className="p-3 bg-muted/50 rounded-lg text-sm">
                 <div className="font-medium mb-1">{interaction.description}</div>
                 <div className="text-xs text-muted-foreground">
-                  {new Date(interaction.createdAt).toLocaleDateString('pt-BR')} às {new Date(interaction.createdAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                  {new Date(interaction.date).toLocaleDateString('pt-BR')} às {new Date(interaction.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                 </div>
               </div>
             ))
@@ -104,7 +104,7 @@ export default async function ClienteDetalhesPage({
             <p className="text-sm text-muted-foreground text-center py-2">Nenhum lembrete agendado.</p>
           ) : (
             cliente.reminders.map(reminder => (
-              <div key={reminder.id} className={`p-3 rounded-lg text-sm border-l-4 ${reminder.isCompleted ? 'border-green-500 bg-green-500/10' : 'border-primary bg-primary/5'}`}>
+              <div key={reminder.id} className={`p-3 rounded-lg text-sm border-l-4 ${reminder.status === 'DONE' ? 'border-green-500 bg-green-500/10' : 'border-primary bg-primary/5'}`}>
                 <div className="font-medium mb-1">{reminder.description}</div>
                 <div className="text-xs text-muted-foreground">
                   Data: {new Date(reminder.date).toLocaleDateString('pt-BR')} às {new Date(reminder.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
