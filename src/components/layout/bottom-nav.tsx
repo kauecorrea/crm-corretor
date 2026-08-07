@@ -17,7 +17,7 @@ export function BottomNav() {
           <Building className="w-5 h-5" />
           <span className="text-[10px] font-medium">Imóveis</span>
         </Link>
-        <Link href="/funil" className="flex flex-col items-center justify-center w-full h-full space-y-1 text-muted-foreground hover:text-foreground">
+        <Link href="/leads" className="flex flex-col items-center justify-center w-full h-full space-y-1 text-muted-foreground hover:text-foreground">
           <FileText className="w-5 h-5" />
           <span className="text-[10px] font-medium">Funil</span>
         </Link>
