@@ -39,5 +39,4 @@ export async function updateSlugAction(formData: FormData) {
   });
 
   revalidatePath("/config");
-  return formattedSlug;
 }

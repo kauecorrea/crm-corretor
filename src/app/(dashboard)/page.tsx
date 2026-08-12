@@ -42,7 +42,8 @@ export default async function HomeDashboard() {
 
   // Processa dados para os gráficos
   const originCounts = allLeads.reduce((acc, lead) => {
-    acc[lead.origin] = (acc[lead.origin] || 0) + 1;
+    const origin = lead.origin || 'Outros';
+    acc[origin] = (acc[origin] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
   const leadsData = Object.entries(originCounts).map(([name, total]) => ({ name, total }));
