@@ -10,6 +10,7 @@ model User {
   id        String   @id @default(cuid())
   email     String   @unique
   name      String?
+  slug      String?  @unique
   role      Role     @default(BROKER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -35,6 +36,13 @@ model Client {
   email       String?
   types       ClientType[]
   notes       String?
+  
+  // Preferências para Smart Match
+  minBudget             Float?
+  maxBudget             Float?
+  desiredPropertyType   PropertyType?
+  desiredNeighborhoods  String[]
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -43,6 +51,7 @@ model Client {
   contracts       Contract[]
   interactions    Interaction[]
   reminders       Reminder[]
+  documents       ClientDocument[]
 }
 
 enum ClientType {
@@ -169,4 +178,16 @@ enum ReminderStatus {
   PENDING
   DONE
   CANCELED
+}
+
+model ClientDocument {
+  id          String   @id @default(cuid())
+  clientId    String
+  client      Client   @relation(fields: [clientId], references: [id])
+  
+  name        String
+  fileUrl     String
+  type        String?  
+  
+  createdAt   DateTime @default(now())
 }

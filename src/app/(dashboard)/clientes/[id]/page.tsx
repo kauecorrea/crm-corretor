@@ -36,11 +36,25 @@ export default async function ClienteDetalhesPage({
             <ChevronLeft className="h-6 w-6" />
           </Button>
         </Link>
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">{cliente.name}</h1>
-          <div className="flex gap-2 mt-1 text-sm text-muted-foreground">
-            {cliente.phone && <span className="flex items-center gap-1"><Phone className="h-3 w-3" /> {cliente.phone}</span>}
-            {cliente.email && <span className="flex items-center gap-1"><Mail className="h-3 w-3" /> {cliente.email}</span>}
+        <div className="flex-1">
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold tracking-tight">{cliente.name}</h1>
+            {cliente.phone && (
+              <a 
+                href={`https://wa.me/55${cliente.phone.replace(/\\D/g, '')}?text=Ol%C3%A1%20${encodeURIComponent(cliente.name.split(' ')[0])}`} 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <Button variant="outline" size="sm" className="h-7 gap-1.5 text-emerald-600 border-emerald-200 hover:bg-emerald-50 dark:hover:bg-emerald-950/30">
+                  <MessageSquare className="h-3.5 w-3.5" />
+                  WhatsApp
+                </Button>
+              </a>
+            )}
+          </div>
+          <div className="flex gap-4 mt-1 text-sm text-muted-foreground">
+            {cliente.phone && <span className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5" /> {cliente.phone}</span>}
+            {cliente.email && <span className="flex items-center gap-1.5"><Mail className="h-3.5 w-3.5" /> {cliente.email}</span>}
           </div>
         </div>
       </header>

@@ -113,6 +113,22 @@ export default async function HomeDashboard() {
         </Card>
       </div>
 
+      {/* Alerta de Leads Estagnados */}
+      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-4">
+        <div className="bg-amber-100 p-2 rounded-full mt-0.5">
+          <Target className="h-5 w-5 text-amber-600" />
+        </div>
+        <div>
+          <h3 className="text-sm font-bold text-amber-900">Atenção aos seus Leads</h3>
+          <p className="text-sm text-amber-700 mt-1">Você tem alguns leads parados há mais de 5 dias no seu funil de vendas sem interação. Não perca o timing da venda!</p>
+          <Link href="/leads">
+            <Button variant="link" className="text-amber-700 p-0 h-auto font-bold mt-2 hover:text-amber-800">
+              Ver Funil de Vendas <ArrowRight className="h-4 w-4 ml-1" />
+            </Button>
+          </Link>
+        </div>
+      </div>
+
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Lembretes Recentes */}
         <div className="lg:col-span-2 space-y-4">
