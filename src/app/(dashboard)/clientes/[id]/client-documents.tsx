@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FileText, Upload, Loader2, X, Download } from "lucide-react";
-import { addDocumentAction } from "./actions";
+import { addDocumentAction } from "../actions";
 
 export function ClientDocuments({ clientId, initialDocuments = [] }: { clientId: string, initialDocuments?: any[] }) {
   const [documents, setDocuments] = useState(initialDocuments);
