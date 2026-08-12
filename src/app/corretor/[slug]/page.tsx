@@ -31,7 +31,7 @@ export default async function CorretorPortfolioPage({
         <div className="max-w-4xl mx-auto px-4 py-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-              Imóveis de {broker.name || broker.email.split('@')[0]}
+              Imóveis Disponíveis
             </h1>
             <p className="text-sm text-slate-500 mt-1 flex items-center gap-1.5">
               <Building2 className="w-4 h-4" />
@@ -39,7 +39,7 @@ export default async function CorretorPortfolioPage({
             </p>
           </div>
           <a 
-            href={`https://wa.me/?text=Ol%C3%A1,%20estou%20entrando%20em%20contato%20pelo%20seu%20portf%C3%B3lio%20online!`} 
+            href={`https://wa.me/5591985800448?text=Ol%C3%A1,%20estou%20entrando%20em%20contato%20pelo%20seu%20portf%C3%B3lio%20online!`} 
             target="_blank" 
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-emerald-600 text-primary-foreground hover:bg-emerald-600/90 h-10 py-2 px-4 shadow-sm"
@@ -98,7 +98,7 @@ export default async function CorretorPortfolioPage({
                   )}
 
                   <a 
-                    href={`https://wa.me/?text=Ol%C3%A1!%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20o%20im%C3%B3vel:%20*${encodeURIComponent(property.title)}*`} 
+                    href={`https://wa.me/5591985800448?text=Ol%C3%A1!%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20o%20im%C3%B3vel:%20*${encodeURIComponent(property.title)}*`} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-flex w-full items-center justify-center rounded-md text-sm font-medium transition-colors border border-input bg-background hover:bg-slate-50 hover:text-slate-900 h-9 px-3"
