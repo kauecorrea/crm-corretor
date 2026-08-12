@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent } from "@/components/ui/card";
+import { DashboardCharts } from "./dashboard-charts";
 
 export default async function HomeDashboard() {
   const supabase = await createClient();
@@ -20,7 +21,8 @@ export default async function HomeDashboard() {
     activeProperties,
     activeLeads,
     contracts,
-    reminders
+    reminders,
+    allLeads
   ] = await Promise.all([
     prisma.client.count({ where: { userId: user.id } }),
     prisma.property.count({ where: { userId: user.id, status: 'AVAILABLE' } }),
@@ -31,11 +33,26 @@ export default async function HomeDashboard() {
       orderBy: { date: 'asc' },
       take: 4,
       include: { client: true }
-    })
+    }),
+    prisma.lead.findMany({ where: { userId: user.id } })
   ]);
 
   const totalComissoes = contracts.reduce((acc, curr) => acc + (curr.commission || 0), 0);
   const totalVendas = contracts.reduce((acc, curr) => acc + (curr.dealValue || 0), 0);
+
+  // Processa dados para os gráficos
+  const originCounts = allLeads.reduce((acc, lead) => {
+    acc[lead.origin] = (acc[lead.origin] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+  const leadsData = Object.entries(originCounts).map(([name, total]) => ({ name, total }));
+
+  const salesByMonth = contracts.reduce((acc, contract) => {
+    const month = new Date(contract.createdAt).toLocaleString('pt-BR', { month: 'short' });
+    acc[month] = (acc[month] || 0) + (contract.dealValue || 0);
+    return acc;
+  }, {} as Record<string, number>);
+  const salesData = Object.entries(salesByMonth).map(([name, total]) => ({ name, total }));
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-12">
@@ -112,6 +129,8 @@ export default async function HomeDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      <DashboardCharts leadsData={leadsData} salesData={salesData} />
 
       {/* Alerta de Leads Estagnados */}
       <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-4">

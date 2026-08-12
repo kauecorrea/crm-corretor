@@ -8,6 +8,7 @@ import { addInteractionAction, addReminderAction } from "../actions";
 import Link from "next/link";
 import { ChevronLeft, Phone, Mail, Calendar as CalendarIcon, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ClientDocuments } from "./client-documents";
 
 export default async function ClienteDetalhesPage({
   params,
@@ -21,6 +22,7 @@ export default async function ClienteDetalhesPage({
     include: {
       interactions: { orderBy: { date: 'desc' } },
       reminders: { orderBy: { date: 'asc' } },
+      documents: { orderBy: { createdAt: 'desc' } },
     }
   });
 
@@ -128,6 +130,9 @@ export default async function ClienteDetalhesPage({
           )}
         </div>
       </div>
+
+      {/* Documentos */}
+      <ClientDocuments clientId={cliente.id} initialDocuments={cliente.documents} />
     </div>
   );
 }
