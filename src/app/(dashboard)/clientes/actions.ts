@@ -61,18 +61,42 @@ export async function addInteractionAction(formData: FormData) {
 export async function addReminderAction(formData: FormData) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return;
+
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
 
   const clientId = formData.get("clientId") as string;
   const description = formData.get("description") as string;
-  const dateStr = formData.get("date") as string; // Expects YYYY-MM-DDTHH:mm or similar
+  const date = new Date(formData.get("date") as string);
 
   await prisma.reminder.create({
     data: {
-      userId: user.id,
-      clientId,
       description,
-      date: new Date(dateStr),
+      date,
+      clientId,
+      userId: user.id
+    }
+  });
+
+  revalidatePath(`/clientes/${clientId}`);
+  revalidatePath("/");
+}
+
+export async function addDocumentAction(clientId: string, name: string, fileUrl: string, type: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
+
+  await prisma.clientDocument.create({
+    data: {
+      name,
+      fileUrl,
+      type,
+      clientId,
     }
   });
 

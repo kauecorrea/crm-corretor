@@ -1,16 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FileText, Upload, Loader2, X, Download } from "lucide-react";
+import { addDocumentAction } from "./actions";
 
 export function ClientDocuments({ clientId, initialDocuments = [] }: { clientId: string, initialDocuments?: any[] }) {
   const [documents, setDocuments] = useState(initialDocuments);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -21,7 +23,7 @@ export function ClientDocuments({ clientId, initialDocuments = [] }: { clientId:
     const supabase = createClient();
 
     try {
-      const fileExt = file.name.split('.').pop();
+      const fileExt = file.name.split('.').pop() || '';
       const fileName = `${clientId}/${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
 
       const { data, error: uploadError } = await supabase.storage
@@ -34,8 +36,10 @@ export function ClientDocuments({ clientId, initialDocuments = [] }: { clientId:
         .from('crm_uploads')
         .getPublicUrl(fileName);
 
-      // Now save to database using Server Action
-      // We will create an action later, for now just update state to simulate
+      startTransition(async () => {
+        await addDocumentAction(clientId, file.name, publicUrl, fileExt);
+      });
+
       const newDoc = {
         id: Math.random().toString(),
         name: file.name,
@@ -43,9 +47,7 @@ export function ClientDocuments({ clientId, initialDocuments = [] }: { clientId:
         type: fileExt,
         createdAt: new Date().toISOString()
       };
-
-      setDocuments(prev => [...prev, newDoc]);
-      // TODO: Call server action to persist ClientDocument
+      setDocuments(prev => [newDoc, ...prev]);
     } catch (err: any) {
       console.error(err);
       setError("Erro ao fazer upload. Verifique se o bucket 'crm_uploads' existe no Supabase.");

@@ -46,7 +46,7 @@ export async function createImovelAction(formData: FormData) {
       const fileName = `${user.id}/${imovel.id}/${i}-${Date.now()}.${fileExt}`;
 
       const { data, error } = await supabase.storage
-        .from('properties')
+        .from('crm_uploads')
         .upload(fileName, photo, {
           cacheControl: '3600',
           upsert: false
@@ -54,7 +54,7 @@ export async function createImovelAction(formData: FormData) {
 
       if (data) {
         // Get public URL
-        const { data: publicUrlData } = supabase.storage.from('properties').getPublicUrl(fileName);
+        const { data: publicUrlData } = supabase.storage.from('crm_uploads').getPublicUrl(fileName);
         uploadedUrls.push(publicUrlData.publicUrl);
       }
     }
