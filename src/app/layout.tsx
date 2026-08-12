@@ -1,21 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { BottomNav } from "@/components/layout/bottom-nav";
+import { Sidebar } from "@/components/layout/sidebar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "CRM Imobiliário",
-  description: "CRM Mobile-First para Corretores",
+  title: "CRM Corretor Dashboard",
+  description: "O CRM moderno e completo para corretores",
 };
 
 export default function RootLayout({
@@ -26,13 +22,18 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${plusJakartaSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-muted/40">
-        <main className="flex-1 pb-16">
-          {children}
-        </main>
-        <BottomNav />
+      <body className="min-h-full flex bg-slate-50 text-slate-900 font-sans">
+        <Sidebar />
+        <div className="flex-1 flex flex-col md:pl-64 min-h-screen">
+          <main className="flex-1 pb-20 md:pb-6 px-4 md:px-8 pt-6">
+            <div className="max-w-7xl mx-auto w-full">
+              {children}
+            </div>
+          </main>
+          <BottomNav />
+        </div>
       </body>
     </html>
   );
