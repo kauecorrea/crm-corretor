@@ -37,7 +37,7 @@ export default async function ConfigPage() {
           <CardDescription>Configure o seu link exclusivo para enviar aos clientes</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <form action={updateSlugAction} className="space-y-3">
+          <form action={updateSlugAction} className="space-y-4">
             <div className="space-y-1">
               <Label htmlFor="slug">Seu Link (URL)</Label>
               <div className="flex gap-2 items-center">
@@ -54,8 +54,20 @@ export default async function ConfigPage() {
               </div>
               <p className="text-xs text-slate-400 mt-1">Use apenas letras minúsculas, números e hifens (-).</p>
             </div>
+            
+            <div className="space-y-1">
+              <Label htmlFor="phone">Seu WhatsApp (apenas números)</Label>
+              <Input 
+                id="phone" 
+                name="phone" 
+                defaultValue={dbUser?.phone || ""} 
+                placeholder="Ex: 5511999999999" 
+              />
+              <p className="text-xs text-slate-400 mt-1">Este número será usado nos botões do seu portfólio. Não esqueça do código do país e DDD (ex: 5511...)</p>
+            </div>
+
             <SubmitButton pendingText="Salvando..." size="sm">
-              Salvar Link
+              Salvar Configurações
             </SubmitButton>
           </form>
 

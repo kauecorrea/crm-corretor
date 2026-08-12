@@ -13,12 +13,15 @@ export async function updateSlugAction(formData: FormData) {
   }
 
   const slug = formData.get("slug") as string;
+  const phoneInput = formData.get("phone") as string;
   
   // Format slug: lowercase, replace spaces with hyphens, remove special characters
   const formattedSlug = slug
     .toLowerCase()
     .replace(/\\s+/g, '-')
     .replace(/[^a-z0-9-]/g, '');
+
+  const phone = phoneInput ? phoneInput.replace(/\\D/g, '') : null;
 
   if (!formattedSlug) {
     throw new Error("Slug inválido");
@@ -35,7 +38,10 @@ export async function updateSlugAction(formData: FormData) {
 
   await prisma.user.update({
     where: { id: user.id },
-    data: { slug: formattedSlug }
+    data: { 
+      slug: formattedSlug,
+      phone
+    }
   });
 
   revalidatePath("/config");
