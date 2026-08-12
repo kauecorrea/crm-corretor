@@ -9,14 +9,14 @@ import { LeadStageSelect } from "./lead-stage-select";
 import { LeadStage } from "@prisma/client";
 
 const STAGES = [
-  { value: "NEW", label: "Novo Lead", color: "bg-blue-100 border-blue-200" },
-  { value: "CONTACTED", label: "Contatado", color: "bg-indigo-100 border-indigo-200" },
-  { value: "VISIT_SCHEDULED", label: "Visita Agend.", color: "bg-yellow-100 border-yellow-200" },
-  { value: "VISIT_DONE", label: "Visita Realiz.", color: "bg-orange-100 border-orange-200" },
-  { value: "PROPOSAL", label: "Proposta", color: "bg-purple-100 border-purple-200" },
-  { value: "NEGOTIATION", label: "Negociação", color: "bg-pink-100 border-pink-200" },
-  { value: "WON", label: "Ganho", color: "bg-green-100 border-green-200" },
-  { value: "LOST", label: "Perdido", color: "bg-red-100 border-red-200" },
+  { value: "NEW", label: "Novo Lead", dotColor: "bg-blue-500" },
+  { value: "CONTACTED", label: "Contatado", dotColor: "bg-indigo-500" },
+  { value: "VISIT_SCHEDULED", label: "Visita Agend.", dotColor: "bg-yellow-500" },
+  { value: "VISIT_DONE", label: "Visita Realiz.", dotColor: "bg-orange-500" },
+  { value: "PROPOSAL", label: "Proposta", dotColor: "bg-purple-500" },
+  { value: "NEGOTIATION", label: "Negociação", dotColor: "bg-pink-500" },
+  { value: "WON", label: "Ganho", dotColor: "bg-emerald-500" },
+  { value: "LOST", label: "Perdido", dotColor: "bg-slate-400" },
 ];
 
 export default async function LeadsPage() {
@@ -41,61 +41,70 @@ export default async function LeadsPage() {
   });
 
   return (
-    <div className="flex flex-col h-[100dvh] bg-muted/20">
-      <header className="flex items-center justify-between p-4 bg-background border-b shrink-0">
+    <div className="flex flex-col h-full space-y-6 animate-in fade-in duration-500">
+      <header className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Funil de Vendas</h1>
-          <p className="text-sm text-muted-foreground">
-            Acompanhe seus leads
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Funil de Vendas</h1>
+          <p className="text-sm text-slate-500 mt-1">
+            Acompanhe e mova seus leads pelo processo
           </p>
         </div>
         <Link href="/leads/novo">
-          <Button size="icon">
-            <Plus className="h-5 w-5" />
+          <Button className="shadow-sm">
+            <Plus className="h-4 w-4 mr-2" />
+            Novo Lead
           </Button>
         </Link>
       </header>
       
       {/* Kanban Board - Scroll Horizontal */}
-      <div className="flex-1 overflow-x-auto overflow-y-hidden p-4 flex gap-4 snap-x snap-mandatory">
+      <div className="flex-1 overflow-x-auto pb-6 flex gap-6 snap-x snap-mandatory min-h-[600px] scrollbar-thin scrollbar-thumb-slate-300">
         {STAGES.map((stage) => {
           const columnLeads = leads.filter(l => l.stage === stage.value);
           
           return (
-            <div key={stage.value} className="w-[85vw] max-w-[300px] shrink-0 flex flex-col snap-center bg-muted/40 rounded-xl border h-full max-h-full">
-              <div className={`p-3 border-b rounded-t-xl font-bold flex items-center justify-between ${stage.color}`}>
-                <span>{stage.label}</span>
-                <span className="bg-white/50 text-black px-2 py-0.5 rounded-full text-xs">{columnLeads.length}</span>
+            <div key={stage.value} className="w-[320px] shrink-0 flex flex-col snap-center bg-slate-100/50 rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
+              <div className="p-4 flex items-center justify-between border-b border-slate-200/60 bg-white/60 backdrop-blur-md">
+                <div className="flex items-center gap-2">
+                  <div className={`w-2.5 h-2.5 rounded-full ${stage.dotColor} shadow-sm`} />
+                  <span className="font-semibold text-sm text-slate-700 tracking-wide">{stage.label}</span>
+                </div>
+                <span className="bg-slate-200/70 text-slate-600 px-2.5 py-0.5 rounded-full text-xs font-bold">
+                  {columnLeads.length}
+                </span>
               </div>
               
-              <div className="p-2 flex-1 overflow-y-auto space-y-2">
+              <div className="p-3 flex-1 overflow-y-auto space-y-3">
                 {columnLeads.map((lead) => (
-                  <Card key={lead.id} className="shadow-sm">
-                    <CardContent className="p-3">
-                      <div className="font-medium text-sm mb-1">
+                  <Card key={lead.id} className="shadow-sm border-slate-200/70 hover:border-primary/40 hover:shadow-md transition-all duration-200 cursor-grab active:cursor-grabbing bg-white/90">
+                    <CardContent className="p-4">
+                      <div className="font-semibold text-sm text-slate-800 mb-1 line-clamp-1">
                         {lead.client ? lead.client.name : 'Cliente Não Informado'}
                       </div>
                       
                       {lead.property && (
-                        <div className="text-xs text-muted-foreground truncate mb-2">
-                          Imóvel: {lead.property.title}
+                        <div className="text-xs text-slate-500 truncate mb-3 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                          {lead.property.title}
                         </div>
                       )}
                       
-                      <div className="flex justify-between items-center mt-2">
-                        <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded">
+                      <div className="flex justify-between items-center mt-3 pt-3 border-t border-slate-100">
+                        <span className="text-[10px] font-medium text-slate-500 uppercase tracking-wider bg-slate-100 px-2 py-1 rounded-md">
                           {lead.origin}
                         </span>
                       </div>
 
-                      <LeadStageSelect leadId={lead.id} initialStage={lead.stage} />
+                      <div className="mt-3">
+                        <LeadStageSelect leadId={lead.id} initialStage={lead.stage} />
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
                 
                 {columnLeads.length === 0 && (
-                  <div className="text-center p-4 text-xs text-muted-foreground border-2 border-dashed rounded-lg">
-                    Nenhum lead
+                  <div className="flex flex-col items-center justify-center p-6 text-center border-2 border-dashed border-slate-200 rounded-xl bg-slate-50/50 mt-2">
+                    <span className="text-xs font-medium text-slate-400">Nenhum lead</span>
                   </div>
                 )}
               </div>
