@@ -1,8 +1,8 @@
 import { login, signup } from "./actions";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building } from "lucide-react";
 
 export default async function LoginPage({
@@ -15,7 +15,7 @@ export default async function LoginPage({
 
   return (
     <div className="flex min-h-[100dvh] items-center justify-center p-4">
-      <Card className="w-full max-w-sm">
+      <Card className="w-full max-w-sm glass-card border-none shadow-xl">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
             <div className="bg-primary/10 p-3 rounded-full">
@@ -43,12 +43,12 @@ export default async function LoginPage({
             )}
 
             <div className="flex flex-col gap-2 pt-2">
-              <Button type="submit" formAction={login} className="w-full">
+              <SubmitButton formAction={login} className="w-full" pendingText="Aguarde...">
                 Entrar
-              </Button>
-              <Button type="submit" formAction={signup} variant="outline" className="w-full">
+              </SubmitButton>
+              <SubmitButton formAction={signup} variant="outline" className="w-full" pendingText="Aguarde...">
                 Criar Conta
-              </Button>
+              </SubmitButton>
             </div>
           </form>
         </CardContent>

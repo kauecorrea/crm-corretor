@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,7 +10,7 @@ import { ChevronLeft } from "lucide-react";
 
 export default function NovoClientePage() {
   return (
-    <div className="p-4 space-y-6">
+    <div className="p-4 space-y-6 max-w-2xl mx-auto">
       <header className="flex items-center gap-4">
         <Link href="/clientes">
           <Button variant="ghost" size="icon">
@@ -21,7 +22,7 @@ export default function NovoClientePage() {
         </div>
       </header>
       
-      <form action={createClientAction} className="space-y-4">
+      <form action={createClientAction} className="space-y-4 glass-card p-6">
         <div className="space-y-2">
           <Label htmlFor="name">Nome Completo</Label>
           <Input id="name" name="name" required placeholder="Ex: João da Silva" />
@@ -57,9 +58,9 @@ export default function NovoClientePage() {
         </div>
 
         <div className="pt-4">
-          <Button type="submit" className="w-full">
+          <SubmitButton className="w-full" pendingText="Salvando Cliente...">
             Salvar Cliente
-          </Button>
+          </SubmitButton>
         </div>
       </form>
     </div>
