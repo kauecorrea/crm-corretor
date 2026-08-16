@@ -5,6 +5,7 @@ import { DndContext, DragEndEvent, useDraggable, useDroppable, closestCorners } 
 import { Card, CardContent } from "@/components/ui/card";
 import { LeadStageSelect } from "./lead-stage-select";
 import { updateLeadStageAction } from "./actions";
+import { DeleteLeadButton } from "./delete-lead-button";
 
 const STAGES = [
   { value: "NEW", label: "Novo Lead", dotColor: "bg-blue-500" },
@@ -75,8 +76,13 @@ function KanbanCard({ lead, onSelect, onStageChange }: any) {
       className="shadow-sm border-slate-200/70 hover:border-primary/40 hover:shadow-md transition-all duration-200 cursor-grab active:cursor-grabbing bg-white/90 relative group"
     >
       <CardContent className="p-4">
-        <div className="font-semibold text-sm text-slate-800 mb-1 line-clamp-1 pointer-events-none">
-          {lead.client ? lead.client.name : 'Cliente Não Informado'}
+        <div className="flex justify-between items-start gap-2 mb-1">
+          <div className="font-semibold text-sm text-slate-800 line-clamp-1 pointer-events-none">
+            {lead.client ? lead.client.name : 'Cliente Não Informado'}
+          </div>
+          <div onPointerDown={e => e.stopPropagation()} onClick={e => e.stopPropagation()}>
+            <DeleteLeadButton id={lead.id} />
+          </div>
         </div>
         
         {lead.property && (
