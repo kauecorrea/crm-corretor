@@ -13,6 +13,9 @@ export function NovoImovelForm({ clientes }: { clientes: Client[] }) {
   const [propertyType, setPropertyType] = useState("SALE");
   const [isPending, setIsPending] = useState(false);
 
+  const [ownerId, setOwnerId] = useState<string>("");
+  const selectedOwner = clientes.find(c => c.id === ownerId);
+
   return (
     <form action={async (formData) => {
       setIsPending(true);
@@ -58,9 +61,11 @@ export function NovoImovelForm({ clientes }: { clientes: Client[] }) {
 
       <div className="space-y-2">
         <Label htmlFor="ownerId">Proprietário (Cliente)</Label>
-        <Select name="ownerId" required>
+        <Select name="ownerId" required value={ownerId} onValueChange={setOwnerId}>
           <SelectTrigger>
-            <SelectValue placeholder="Selecione o proprietário" />
+            <SelectValue placeholder="Selecione o proprietário">
+              {selectedOwner ? selectedOwner.name : "Selecione o proprietário"}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {clientes.map(cliente => (

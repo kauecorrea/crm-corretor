@@ -9,6 +9,11 @@ import { createLeadAction } from "../actions";
 
 export function NovoLeadForm({ clientes, imoveis }: { clientes: any[], imoveis: any[] }) {
   const [isPending, setIsPending] = useState(false);
+  const [clientId, setClientId] = useState<string>("");
+  const [propertyId, setPropertyId] = useState<string>("");
+
+  const selectedClient = clientes.find(c => c.id === clientId);
+  const selectedProperty = imoveis.find(p => p.id === propertyId);
 
   return (
     <form action={async (formData) => {
@@ -22,9 +27,11 @@ export function NovoLeadForm({ clientes, imoveis }: { clientes: any[], imoveis: 
       
       <div className="space-y-2">
         <Label htmlFor="clientId">Cliente (Opcional)</Label>
-        <Select name="clientId">
+        <Select name="clientId" value={clientId} onValueChange={setClientId}>
           <SelectTrigger>
-            <SelectValue placeholder="Selecione um cliente" />
+            <SelectValue placeholder="Selecione um cliente">
+              {selectedClient ? selectedClient.name : "Selecione um cliente"}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {clientes.map(cliente => (
@@ -37,9 +44,11 @@ export function NovoLeadForm({ clientes, imoveis }: { clientes: any[], imoveis: 
 
       <div className="space-y-2">
         <Label htmlFor="propertyId">Imóvel de Interesse (Opcional)</Label>
-        <Select name="propertyId">
+        <Select name="propertyId" value={propertyId} onValueChange={setPropertyId}>
           <SelectTrigger>
-            <SelectValue placeholder="Selecione um imóvel" />
+            <SelectValue placeholder="Selecione um imóvel">
+              {selectedProperty ? selectedProperty.title : "Selecione um imóvel"}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {imoveis.map(imovel => (
