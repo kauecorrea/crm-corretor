@@ -45,7 +45,7 @@ export default function NovoClientePage() {
 
         <div className="space-y-2">
           <Label htmlFor="type">Perfil do Cliente</Label>
-          <Select name="type" required value={clientType} onValueChange={setClientType}>
+          <Select name="type" required value={clientType} onValueChange={(val) => val && setClientType(val)}>
             <SelectTrigger>
               <SelectValue placeholder="Selecione o perfil">
                 {clientType === "BUYER" ? "Comprador" : clientType === "RENTER" ? "Locatário" : clientType === "OWNER" ? "Proprietário" : "Selecione o perfil"}
