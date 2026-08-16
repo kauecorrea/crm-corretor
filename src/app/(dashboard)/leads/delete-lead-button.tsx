@@ -16,13 +16,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export function DeleteLeadButton({ id }: { id: string }) {
+export function DeleteLeadButton({ id, onSuccess }: { id: string, onSuccess?: () => void }) {
   const [isPending, setIsPending] = useState(false);
 
   const handleDelete = async () => {
     setIsPending(true);
     try {
       await deleteLeadAction(id);
+      if (onSuccess) onSuccess();
     } catch (error) {
       setIsPending(false);
     }
