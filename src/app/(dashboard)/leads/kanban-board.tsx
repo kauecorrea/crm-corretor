@@ -48,7 +48,7 @@ function KanbanColumn({ stage, leads, children }: any) {
   );
 }
 
-function KanbanCard({ lead }: any) {
+function KanbanCard({ lead, onSelect }: any) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: lead.id,
     data: { stage: lead.stage }
@@ -67,7 +67,12 @@ function KanbanCard({ lead }: any) {
       {...listeners} 
       {...attributes}
       style={style}
-      className="shadow-sm border-slate-200/70 hover:border-primary/40 hover:shadow-md transition-all duration-200 cursor-grab active:cursor-grabbing bg-white/90"
+      onClick={() => {
+        if (!isDragging) {
+          onSelect(lead);
+        }
+      }}
+      className="shadow-sm border-slate-200/70 hover:border-primary/40 hover:shadow-md transition-all duration-200 cursor-grab active:cursor-grabbing bg-white/90 relative group"
     >
       <CardContent className="p-4">
         <div className="font-semibold text-sm text-slate-800 mb-1 line-clamp-1 pointer-events-none">
@@ -85,10 +90,15 @@ function KanbanCard({ lead }: any) {
           <span className="text-[10px] font-medium text-slate-500 uppercase tracking-wider bg-slate-100 px-2 py-1 rounded-md">
             {lead.origin}
           </span>
+          {lead.client?.interactions?.length > 0 && (
+            <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">
+              {lead.client.interactions.length} Follow-ups
+            </span>
+          )}
         </div>
 
         {/* Prevent dragging when interacting with select */}
-        <div className="mt-3 cursor-default" onPointerDown={e => e.stopPropagation()}>
+        <div className="mt-3 cursor-default" onPointerDown={e => e.stopPropagation()} onClick={e => e.stopPropagation()}>
           <LeadStageSelect leadId={lead.id} initialStage={lead.stage} />
         </div>
       </CardContent>
@@ -96,9 +106,12 @@ function KanbanCard({ lead }: any) {
   );
 }
 
+import { LeadModal } from "./lead-modal";
+
 export function KanbanBoard({ initialLeads }: { initialLeads: any[] }) {
   const [leads, setLeads] = useState(initialLeads);
   const [isPending, startTransition] = useTransition();
+  const [selectedLead, setSelectedLead] = useState<any>(null);
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -122,19 +135,27 @@ export function KanbanBoard({ initialLeads }: { initialLeads: any[] }) {
   }
 
   return (
-    <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
-      <div className="flex-1 overflow-x-auto pb-6 flex gap-6 snap-x snap-mandatory min-h-[600px] scrollbar-thin scrollbar-thumb-slate-300">
-        {STAGES.map(stage => {
-          const columnLeads = leads.filter(l => l.stage === stage.value);
-          return (
-            <KanbanColumn key={stage.value} stage={stage} leads={columnLeads}>
-              {columnLeads.map(lead => (
-                <KanbanCard key={lead.id} lead={lead} />
-              ))}
-            </KanbanColumn>
-          );
-        })}
-      </div>
-    </DndContext>
+    <>
+      <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+        <div className="flex-1 overflow-x-auto pb-6 flex gap-6 snap-x snap-mandatory min-h-[600px] scrollbar-thin scrollbar-thumb-slate-300">
+          {STAGES.map(stage => {
+            const columnLeads = leads.filter(l => l.stage === stage.value);
+            return (
+              <KanbanColumn key={stage.value} stage={stage} leads={columnLeads}>
+                {columnLeads.map(lead => (
+                  <KanbanCard key={lead.id} lead={lead} onSelect={setSelectedLead} />
+                ))}
+              </KanbanColumn>
+            );
+          })}
+        </div>
+      </DndContext>
+      
+      <LeadModal 
+        lead={selectedLead} 
+        isOpen={!!selectedLead} 
+        onClose={() => setSelectedLead(null)} 
+      />
+    </>
   );
 }

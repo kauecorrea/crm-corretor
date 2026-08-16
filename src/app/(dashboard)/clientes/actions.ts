@@ -56,6 +56,7 @@ export async function addInteractionAction(formData: FormData) {
   });
 
   revalidatePath(`/clientes/${clientId}`);
+  revalidatePath(`/leads`);
 }
 
 export async function addReminderAction(formData: FormData) {
@@ -81,6 +82,7 @@ export async function addReminderAction(formData: FormData) {
 
   revalidatePath(`/clientes/${clientId}`);
   revalidatePath("/");
+  revalidatePath("/leads");
 }
 
 export async function addDocumentAction(clientId: string, name: string, fileUrl: string, type: string) {

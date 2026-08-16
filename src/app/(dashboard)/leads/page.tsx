@@ -19,7 +19,12 @@ export default async function LeadsPage() {
       userId: user.id,
     },
     include: {
-      client: true,
+      client: {
+        include: {
+          interactions: { orderBy: { date: 'desc' } },
+          reminders: { orderBy: { date: 'asc' }, where: { status: 'PENDING' } }
+        }
+      },
       property: true,
     },
     orderBy: {
