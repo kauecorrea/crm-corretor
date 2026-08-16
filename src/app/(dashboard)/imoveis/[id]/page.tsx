@@ -5,6 +5,8 @@ import Link from "next/link";
 import { ChevronLeft, MapPin, User, FileText } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
+import { createClient } from "@/utils/supabase/server";
+import { DeleteImovelButton } from "./delete-imovel-button";
 
 export default async function ImovelDetalhesPage({
   params,
@@ -12,6 +14,8 @@ export default async function ImovelDetalhesPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params;
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
   
   const imovel = await prisma.property.findUnique({
     where: { id },
@@ -24,6 +28,8 @@ export default async function ImovelDetalhesPage({
     notFound();
   }
 
+  const isOwner = user?.id === imovel.userId;
+
   return (
     <div className="p-4 space-y-6 pb-20">
       <header className="flex items-center gap-4">
@@ -32,21 +38,26 @@ export default async function ImovelDetalhesPage({
             <ChevronLeft className="h-6 w-6" />
           </Button>
         </Link>
-        <div className="flex-1 overflow-hidden">
-          <h1 className="text-xl font-bold tracking-tight truncate">{imovel.title}</h1>
-          <div className="flex gap-2 mt-1 text-sm text-muted-foreground">
-            <div className="flex flex-col">
-              <span className="font-medium text-primary">
-                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(imovel.price)} {imovel.type === 'SALE_AND_RENTAL' && <span className="text-xs text-muted-foreground font-normal">(Venda)</span>}
-              </span>
-              {imovel.type === 'SALE_AND_RENTAL' && imovel.rentPrice && (
-                <span className="font-medium text-primary mt-0.5">
-                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(imovel.rentPrice)} <span className="text-xs text-muted-foreground font-normal">(Locação)</span>
-                </span>
-              )}
+        <div className="flex-1 flex justify-between items-start">
+          <div className="flex-1 overflow-hidden">
+            <div className="flex items-center gap-3">
+              <h1 className="text-xl font-bold tracking-tight truncate">{imovel.title}</h1>
+              {isOwner && <DeleteImovelButton id={imovel.id} />}
             </div>
-            <span>•</span>
-            <span>{imovel.type === 'SALE' ? 'Venda' : imovel.type === 'RENTAL' ? 'Locação' : 'Venda e Locação'}</span>
+            <div className="flex gap-2 mt-1 text-sm text-muted-foreground">
+              <div className="flex flex-col">
+                <span className="font-medium text-primary">
+                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(imovel.price)} {imovel.type === 'SALE_AND_RENTAL' && <span className="text-xs text-muted-foreground font-normal">(Venda)</span>}
+                </span>
+                {imovel.type === 'SALE_AND_RENTAL' && imovel.rentPrice && (
+                  <span className="font-medium text-primary mt-0.5">
+                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(imovel.rentPrice)} <span className="text-xs text-muted-foreground font-normal">(Locação)</span>
+                  </span>
+                )}
+              </div>
+              <span>•</span>
+              <span>{imovel.type === 'SALE' ? 'Venda' : imovel.type === 'RENTAL' ? 'Locação' : 'Venda e Locação'}</span>
+            </div>
           </div>
         </div>
       </header>

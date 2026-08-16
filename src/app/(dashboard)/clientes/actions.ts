@@ -104,3 +104,27 @@ export async function addDocumentAction(clientId: string, name: string, fileUrl:
 
   revalidatePath(`/clientes/${clientId}`);
 }
+
+export async function deleteClientAction(id: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
+
+  // Use a transaction to clean up all related records
+  await prisma.$transaction([
+    prisma.interaction.deleteMany({ where: { clientId: id } }),
+    prisma.reminder.deleteMany({ where: { clientId: id } }),
+    prisma.clientDocument.deleteMany({ where: { clientId: id } }),
+    prisma.contract.deleteMany({ where: { clientId: id } }),
+    prisma.lead.deleteMany({ where: { clientId: id } }),
+    // For properties, just detach the owner rather than deleting the property
+    prisma.property.updateMany({ where: { ownerId: id }, data: { ownerId: null } }),
+    prisma.client.delete({ where: { id } })
+  ]);
+
+  revalidatePath("/clientes");
+  redirect("/clientes");
+}

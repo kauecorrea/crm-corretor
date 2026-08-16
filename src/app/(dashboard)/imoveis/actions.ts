@@ -87,3 +87,22 @@ export async function createImovelAction(formData: FormData) {
   revalidatePath("/imoveis");
   redirect("/imoveis");
 }
+
+export async function deleteImovelAction(id: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
+
+  // Use a transaction to clean up all related records
+  await prisma.$transaction([
+    prisma.contract.deleteMany({ where: { propertyId: id } }),
+    prisma.lead.deleteMany({ where: { propertyId: id } }),
+    prisma.property.delete({ where: { id } })
+  ]);
+
+  revalidatePath("/imoveis");
+  redirect("/imoveis");
+}

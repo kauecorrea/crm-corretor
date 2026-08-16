@@ -9,6 +9,7 @@ import Link from "next/link";
 import { ChevronLeft, Phone, Mail, Calendar as CalendarIcon, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ClientDocuments } from "./client-documents";
+import { DeleteClientButton } from "./delete-client-button";
 
 export default async function ClienteDetalhesPage({
   params,
@@ -43,7 +44,7 @@ export default async function ClienteDetalhesPage({
             <h1 className="text-2xl font-bold tracking-tight">{cliente.name}</h1>
             {cliente.phone && (
               <a 
-                href={`https://wa.me/55${cliente.phone.replace(/\\D/g, '')}?text=Ol%C3%A1%20${encodeURIComponent(cliente.name.split(' ')[0])}`} 
+                href={`https://wa.me/55${cliente.phone.replace(/\D/g, '')}?text=Ol%C3%A1%20${encodeURIComponent(cliente.name.split(' ')[0])}`} 
                 target="_blank" 
                 rel="noopener noreferrer"
               >
@@ -53,6 +54,7 @@ export default async function ClienteDetalhesPage({
                 </Button>
               </a>
             )}
+            <DeleteClientButton id={cliente.id} />
           </div>
           <div className="flex gap-4 mt-1 text-sm text-muted-foreground">
             {cliente.phone && <span className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5" /> {cliente.phone}</span>}

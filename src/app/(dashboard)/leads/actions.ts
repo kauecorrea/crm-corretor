@@ -49,3 +49,18 @@ export async function updateLeadStageAction(leadId: string, stage: string) {
 
   revalidatePath("/leads");
 }
+
+export async function deleteLeadAction(id: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
+
+  await prisma.lead.delete({
+    where: { id }
+  });
+
+  revalidatePath("/leads");
+}
