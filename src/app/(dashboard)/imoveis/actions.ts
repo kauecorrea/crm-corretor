@@ -16,12 +16,27 @@ export async function createImovelAction(formData: FormData) {
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const priceStr = formData.get("price") as string;
-  const typeStr = formData.get("type") as string; // 'SALE' or 'RENT'
+  const rentPriceStr = formData.get("rentPrice") as string;
+  const typeStr = formData.get("type") as string;
   const ownerId = formData.get("ownerId") as string;
   const photos = formData.getAll("photos") as File[];
 
-  const price = parseFloat(priceStr.replace(/\D/g, "")) / 100 || 0;
+  let price = 0;
+  if (priceStr) {
+    price = parseFloat(priceStr.replace(/\D/g, "")) / 100;
+  }
+  
+  let rentPrice = null;
+  if (rentPriceStr) {
+    rentPrice = parseFloat(rentPriceStr.replace(/\D/g, "")) / 100;
+  }
+
   const type = (typeStr as any) || "SALE";
+
+  // Se for apenas locação, o valor de locação vira o price principal por compatibilidade, mas salva rentPrice tbm
+  if (type === "RENTAL" && rentPrice && !price) {
+    price = rentPrice;
+  }
 
   // Create property in DB
   const imovel = await prisma.property.create({
@@ -31,6 +46,7 @@ export async function createImovelAction(formData: FormData) {
       title,
       description,
       price,
+      rentPrice,
       type,
       photos: [], // We will update this after uploading
     },

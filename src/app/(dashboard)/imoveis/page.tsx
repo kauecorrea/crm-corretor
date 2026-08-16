@@ -78,8 +78,15 @@ export default async function ImoveisPage() {
                     </span>
                   </div>
                   
-                  <div className="flex items-center gap-2 text-primary font-bold text-lg mb-2">
-                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(imovel.price)}
+                  <div className="flex flex-col gap-1 text-primary font-bold text-lg mb-2">
+                    {imovel.type === 'SALE_AND_RENTAL' ? (
+                      <>
+                        <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(imovel.price)} <span className="text-sm font-normal text-muted-foreground">(Venda)</span></span>
+                        {imovel.rentPrice && <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(imovel.rentPrice)} <span className="text-sm font-normal text-muted-foreground">(Locação)</span></span>}
+                      </>
+                    ) : (
+                      <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(imovel.price)}</span>
+                    )}
                   </div>
 
                   {imovel.owner && (

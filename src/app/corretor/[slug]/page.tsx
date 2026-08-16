@@ -91,8 +91,15 @@ export default async function CorretorPortfolioPage({
                 </div>
                 
                 <CardContent className="p-5">
-                  <div className="text-2xl font-bold text-slate-900 mb-2">
-                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(property.price)}
+                  <div className="flex flex-col gap-1 text-primary font-bold text-lg mb-2">
+                    {property.type === 'SALE_AND_RENTAL' ? (
+                      <>
+                        <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(property.price)} <span className="text-xs font-normal text-slate-500">(Venda)</span></span>
+                        {property.rentPrice && <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(property.rentPrice)} <span className="text-xs font-normal text-slate-500">(Locação)</span></span>}
+                      </>
+                    ) : (
+                      <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(property.price)}</span>
+                    )}
                   </div>
                   <h3 className="font-semibold text-lg text-slate-800 line-clamp-1 mb-2">{property.title}</h3>
                   

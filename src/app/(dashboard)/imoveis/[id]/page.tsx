@@ -35,9 +35,16 @@ export default async function ImovelDetalhesPage({
         <div className="flex-1 overflow-hidden">
           <h1 className="text-xl font-bold tracking-tight truncate">{imovel.title}</h1>
           <div className="flex gap-2 mt-1 text-sm text-muted-foreground">
-            <span className="font-medium text-primary">
-              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(imovel.price)}
-            </span>
+            <div className="flex flex-col">
+              <span className="font-medium text-primary">
+                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(imovel.price)} {imovel.type === 'SALE_AND_RENTAL' && <span className="text-xs text-muted-foreground font-normal">(Venda)</span>}
+              </span>
+              {imovel.type === 'SALE_AND_RENTAL' && imovel.rentPrice && (
+                <span className="font-medium text-primary mt-0.5">
+                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(imovel.rentPrice)} <span className="text-xs text-muted-foreground font-normal">(Locação)</span>
+                </span>
+              )}
+            </div>
             <span>•</span>
             <span>{imovel.type === 'SALE' ? 'Venda' : imovel.type === 'RENTAL' ? 'Locação' : 'Venda e Locação'}</span>
           </div>

@@ -73,6 +73,7 @@ model Property {
   address     String?
   neighborhood String?
   price       Float
+  rentPrice   Float?
   type        PropertyType
   status      PropertyStatus @default(AVAILABLE)
   commission  String? 
