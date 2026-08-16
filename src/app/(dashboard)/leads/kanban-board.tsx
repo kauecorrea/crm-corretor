@@ -48,7 +48,7 @@ function KanbanColumn({ stage, leads, children }: any) {
   );
 }
 
-function KanbanCard({ lead, onSelect }: any) {
+function KanbanCard({ lead, onSelect, onStageChange }: any) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: lead.id,
     data: { stage: lead.stage }
@@ -99,7 +99,7 @@ function KanbanCard({ lead, onSelect }: any) {
 
         {/* Prevent dragging when interacting with select */}
         <div className="mt-3 cursor-default" onPointerDown={e => e.stopPropagation()} onClick={e => e.stopPropagation()}>
-          <LeadStageSelect leadId={lead.id} initialStage={lead.stage} />
+          <LeadStageSelect leadId={lead.id} initialStage={lead.stage} onStageChange={onStageChange} />
         </div>
       </CardContent>
     </Card>
@@ -107,11 +107,16 @@ function KanbanCard({ lead, onSelect }: any) {
 }
 
 import { LeadModal } from "./lead-modal";
+import { useEffect } from "react";
 
 export function KanbanBoard({ initialLeads }: { initialLeads: any[] }) {
   const [leads, setLeads] = useState(initialLeads);
   const [isPending, startTransition] = useTransition();
   const [selectedLead, setSelectedLead] = useState<any>(null);
+
+  useEffect(() => {
+    setLeads(initialLeads);
+  }, [initialLeads]);
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -134,6 +139,12 @@ export function KanbanBoard({ initialLeads }: { initialLeads: any[] }) {
     });
   }
 
+  const handleStageChange = (leadId: string, newStage: string) => {
+    setLeads(current => 
+      current.map(l => l.id === leadId ? { ...l, stage: newStage } : l)
+    );
+  };
+
   return (
     <>
       <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
@@ -143,7 +154,7 @@ export function KanbanBoard({ initialLeads }: { initialLeads: any[] }) {
             return (
               <KanbanColumn key={stage.value} stage={stage} leads={columnLeads}>
                 {columnLeads.map(lead => (
-                  <KanbanCard key={lead.id} lead={lead} onSelect={setSelectedLead} />
+                  <KanbanCard key={lead.id} lead={lead} onSelect={setSelectedLead} onStageChange={(newStage: string) => handleStageChange(lead.id, newStage)} />
                 ))}
               </KanbanColumn>
             );

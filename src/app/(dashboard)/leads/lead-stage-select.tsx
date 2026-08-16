@@ -14,7 +14,7 @@ const STAGES = [
   { value: "LOST", label: "Perdido" },
 ];
 
-export function LeadStageSelect({ leadId, initialStage }: { leadId: string, initialStage: string }) {
+export function LeadStageSelect({ leadId, initialStage, onStageChange }: { leadId: string, initialStage: string, onStageChange?: (newStage: string) => void }) {
   const [isPending, startTransition] = useTransition();
 
   return (
@@ -23,8 +23,10 @@ export function LeadStageSelect({ leadId, initialStage }: { leadId: string, init
       disabled={isPending}
       defaultValue={initialStage}
       onChange={(e) => {
+        const newStage = e.target.value;
+        if (onStageChange) onStageChange(newStage);
         startTransition(async () => {
-          await updateLeadStageAction(leadId, e.target.value);
+          await updateLeadStageAction(leadId, newStage);
         });
       }}
     >
