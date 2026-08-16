@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +12,8 @@ import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 
 export default function NovoClientePage() {
+  const [clientType, setClientType] = useState("");
+
   return (
     <div className="p-4 space-y-6 max-w-2xl mx-auto">
       <header className="flex items-center gap-4">
@@ -40,9 +45,11 @@ export default function NovoClientePage() {
 
         <div className="space-y-2">
           <Label htmlFor="type">Perfil do Cliente</Label>
-          <Select name="type" required>
+          <Select name="type" required value={clientType} onValueChange={setClientType}>
             <SelectTrigger>
-              <SelectValue placeholder="Selecione o perfil" />
+              <SelectValue placeholder="Selecione o perfil">
+                {clientType === "BUYER" ? "Comprador" : clientType === "RENTER" ? "Locatário" : clientType === "OWNER" ? "Proprietário" : "Selecione o perfil"}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="BUYER">Comprador</SelectItem>
