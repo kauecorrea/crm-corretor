@@ -83,8 +83,15 @@ export function NovoImovelForm({ clientes }: { clientes: Client[] }) {
 
       <div className="space-y-2">
         <Label htmlFor="photos">Fotos</Label>
-        <Input id="photos" name="photos" type="file" multiple accept="image/*" className="cursor-pointer" />
-        <p className="text-xs text-muted-foreground">Você pode selecionar várias fotos de uma vez.</p>
+        <input 
+          id="photos" 
+          name="photos" 
+          type="file" 
+          multiple 
+          accept="image/*" 
+          className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer" 
+        />
+        <p className="text-xs text-muted-foreground">Para selecionar mais de uma foto, selecione todas de uma vez na galeria ou segure Ctrl/Shift no computador.</p>
       </div>
 
       <div className="space-y-2">
