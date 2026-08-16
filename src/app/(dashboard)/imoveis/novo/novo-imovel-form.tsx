@@ -19,8 +19,14 @@ export function NovoImovelForm({ clientes }: { clientes: Client[] }) {
   return (
     <form action={async (formData) => {
       setIsPending(true);
-      await createImovelAction(formData);
-      setIsPending(false);
+      try {
+        await createImovelAction(formData);
+      } catch (e: any) {
+        if (e?.message === "NEXT_REDIRECT" || e?.digest?.startsWith("NEXT_REDIRECT")) {
+          throw e;
+        }
+        setIsPending(false);
+      }
     }} className="space-y-4 pb-10">
       <div className="space-y-2">
         <Label htmlFor="title">Título do Imóvel</Label>

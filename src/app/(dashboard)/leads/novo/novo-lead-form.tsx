@@ -20,7 +20,10 @@ export function NovoLeadForm({ clientes, imoveis }: { clientes: any[], imoveis: 
       setIsPending(true);
       try {
         await createLeadAction(formData);
-      } catch (e) {
+      } catch (e: any) {
+        if (e?.message === "NEXT_REDIRECT" || e?.digest?.startsWith("NEXT_REDIRECT")) {
+          throw e;
+        }
         setIsPending(false);
       }
     }} className="space-y-4">
