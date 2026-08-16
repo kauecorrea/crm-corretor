@@ -73,8 +73,8 @@ export default async function ImoveisPage() {
                 <CardContent className="p-4">
                   <div className="flex justify-between items-start mb-2">
                     <div className="font-medium text-lg leading-tight">{imovel.title}</div>
-                    <span className={`text-[10px] px-2 py-1 rounded-full font-medium ${imovel.type === 'SALE' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'}`}>
-                      {imovel.type === 'SALE' ? 'VENDA' : 'LOCAÇÃO'}
+                    <span className={`text-[10px] px-2 py-1 rounded-full font-medium ${imovel.type === 'SALE' ? 'bg-blue-100 text-blue-700' : imovel.type === 'RENTAL' ? 'bg-orange-100 text-orange-700' : 'bg-purple-100 text-purple-700'}`}>
+                      {imovel.type === 'SALE' ? 'VENDA' : imovel.type === 'RENTAL' ? 'LOCAÇÃO' : 'VENDA E LOCAÇÃO'}
                     </span>
                   </div>
                   

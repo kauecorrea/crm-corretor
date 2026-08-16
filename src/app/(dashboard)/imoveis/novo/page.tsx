@@ -45,7 +45,8 @@ export default async function NovoImovelPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="SALE">Venda</SelectItem>
-              <SelectItem value="RENT">Locação</SelectItem>
+              <SelectItem value="RENTAL">Locação</SelectItem>
+              <SelectItem value="SALE_AND_RENTAL">Venda e Locação</SelectItem>
             </SelectContent>
           </Select>
         </div>

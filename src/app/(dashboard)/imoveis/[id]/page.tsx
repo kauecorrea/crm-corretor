@@ -39,7 +39,7 @@ export default async function ImovelDetalhesPage({
               {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(imovel.price)}
             </span>
             <span>•</span>
-            <span>{imovel.type === 'SALE' ? 'Venda' : 'Locação'}</span>
+            <span>{imovel.type === 'SALE' ? 'Venda' : imovel.type === 'RENTAL' ? 'Locação' : 'Venda e Locação'}</span>
           </div>
         </div>
       </header>

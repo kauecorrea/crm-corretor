@@ -85,7 +85,7 @@ export default async function CorretorPortfolioPage({
                   )}
                   <div className="absolute top-3 right-3 flex gap-2">
                     <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm hover:bg-white text-xs font-semibold shadow-sm">
-                      {property.type === 'SALE' ? 'Venda' : 'Locação'}
+                      {property.type === 'SALE' ? 'Venda' : property.type === 'RENTAL' ? 'Locação' : 'Venda e Locação'}
                     </Badge>
                   </div>
                 </div>
