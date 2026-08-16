@@ -27,7 +27,7 @@ export function NovoLeadForm({ clientes, imoveis }: { clientes: any[], imoveis: 
       
       <div className="space-y-2">
         <Label htmlFor="clientId">Cliente (Opcional)</Label>
-        <Select name="clientId" value={clientId} onValueChange={setClientId}>
+        <Select name="clientId" value={clientId} onValueChange={(val) => val && setClientId(val)}>
           <SelectTrigger>
             <SelectValue placeholder="Selecione um cliente">
               {selectedClient ? selectedClient.name : "Selecione um cliente"}
@@ -44,7 +44,7 @@ export function NovoLeadForm({ clientes, imoveis }: { clientes: any[], imoveis: 
 
       <div className="space-y-2">
         <Label htmlFor="propertyId">Imóvel de Interesse (Opcional)</Label>
-        <Select name="propertyId" value={propertyId} onValueChange={setPropertyId}>
+        <Select name="propertyId" value={propertyId} onValueChange={(val) => val && setPropertyId(val)}>
           <SelectTrigger>
             <SelectValue placeholder="Selecione um imóvel">
               {selectedProperty ? selectedProperty.title : "Selecione um imóvel"}

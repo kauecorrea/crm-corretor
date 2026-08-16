@@ -61,7 +61,7 @@ export function NovoImovelForm({ clientes }: { clientes: Client[] }) {
 
       <div className="space-y-2">
         <Label htmlFor="ownerId">Proprietário (Cliente)</Label>
-        <Select name="ownerId" required value={ownerId} onValueChange={setOwnerId}>
+        <Select name="ownerId" required value={ownerId} onValueChange={(val) => val && setOwnerId(val)}>
           <SelectTrigger>
             <SelectValue placeholder="Selecione o proprietário">
               {selectedOwner ? selectedOwner.name : "Selecione o proprietário"}
