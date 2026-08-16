@@ -26,7 +26,7 @@ export function NovoImovelForm({ clientes }: { clientes: Client[] }) {
       
       <div className="space-y-2">
         <Label htmlFor="type">Tipo de Negócio</Label>
-        <Select name="type" required value={propertyType} onValueChange={setPropertyType}>
+        <Select name="type" required value={propertyType} onValueChange={(val) => val && setPropertyType(val)}>
           <SelectTrigger>
             <SelectValue placeholder="Venda ou Locação" />
           </SelectTrigger>
